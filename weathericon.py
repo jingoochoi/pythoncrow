@@ -1,0 +1,32 @@
+import tkinter as tk
+from playwright.sync_api import sync_playwright
+window=tk.Tk()
+window.title('weather icon')
+window.geometry('300x300')
+window.update_idletasks()
+window_width = window.winfo_width()
+window_height = window.winfo_height()
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+x_position = (screen_width - window_width) // 2
+y_position = (screen_height - window_height) // 2
+window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+framer=tk.Frame(window)
+framer.place(relx=.5,rely=.5,anchor='center')
+icon=tk.Label(framer,text='ready for icon',font=('arial',20))
+icon.pack()
+window.update()
+with sync_playwright() as p:
+    browser=p.chromium.launch(headless=True)
+    page=browser.new_page()
+    page.goto('https://weather.naver.com/today/02131101?cpName=KMA')
+    page.wait_for_selector('em.card_date_emphasis')
+    real=page.locator('em.card_date_emphasis').first.text_content()
+    if real=='맑음':icon.config(text='🌞')
+    elif real=='흐림' or real=='구름많음':icon.config(text='⛅')
+    elif real=='비' or real=='소나기':icon.config(text='☔')
+    elif real=='눈':icon.config(text='⛄')
+    elif real=='안개' or real=='황사':icon.config(text='🌫️')
+    else:icon.config(text='💧')
+    icon.config(font=('arial',100))
+window.mainloop()
