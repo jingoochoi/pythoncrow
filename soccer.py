@@ -8,4 +8,4 @@ with sync_playwright() as p:
     s=pa.locator('table#t1>tbody>tr').nth(1).locator('td').nth(3).text_content()
     t2=int(m)*int(s)
     v=int(int(t1)/t2*100)
-    print(f'{v}%')
+    print(f'victory probability:{v}%')
