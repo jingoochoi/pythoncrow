@@ -6,6 +6,6 @@ with sync_playwright() as p:
     t1=pa.locator('table#t1>tbody>tr').first.locator('td').nth(3).text_content()
     m=pa.locator('table#t1>tbody>tr').nth(1).locator('td').nth(2).text_content()
     s=pa.locator('table#t1>tbody>tr').nth(1).locator('td').nth(3).text_content()
-    t2=int(m)*int(s)
+    t2=(38-int(m))*3+int(s)
     v=int(int(t1)/t2*100)
     print(f'victory probability:{v}%')
